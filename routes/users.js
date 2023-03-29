@@ -3,7 +3,9 @@ const router = express.Router();
 const User = require('../models/users');
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
-  const allUser =  await User.find();
+  const timeSort = req.query.timeSort === 'asc' ? 'createdAt' : '-createdAt'; // 欄位名稱前加上 - 代表降序排列
+  const limit = req.query.limit;
+  const allUser =  await User.find().sort(timeSort).limit(limit);
   res.status(200).json({
     "status": 'success',
     "data": allUser
